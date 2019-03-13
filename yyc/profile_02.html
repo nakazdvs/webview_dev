@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>プロフィール02</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/css/swiper.min.css">
+<link href="./css/profile_02.css" rel="stylesheet">
+<style id="extendStyle"></style>
+</head>
+<body class="is_else">
+
+<div id="container">
+
+<div id="flex_body">
+<header>
+  headerだよ
+</header>
+<div id="wrap">
+<div class="mainPhotoBox" style="background-image:url(./img/profile.jpg);"></div>
+<div class="mainPhotoBox" style="background-image:url(./img/profile.jpg);"></div>
+<div class="mainPhotoBox" style="background-image:url(./img/profile.jpg);"></div>
+<div class="mainPhotoBox" style="background-image:url(./img/profile.jpg);"></div>
+</div>
+
+</div>
+
+<div id="flex_footer">
+  <textarea rows="1" placeholder="メッセージしてみよう" style="font-size:16px"></textarea>
+</div>
+
+</div>
+
+
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/js/swiper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+<script src="./js/smoothscroll.min.js"></script>
+<script>
+'use strict';
+function _setHeight(){
+  const winH = window.innerHeight;
+  container.style.height = winH + 'px';
+  flex_body.style.height = winH + 'px';
+  /*
+  const wrapH = wrap.scrollHeight;
+  wrap.style.height = wrapH + 'px';
+  */
+}
+_setHeight()
+const winH = window.innerHeight;
+const bodyH = document.body.scrollHeight;
+//console.log(winH)
+console.log(bodyH - winH)
+window.addEventListener('scroll',function(){
+  console.log(document.body.scrollTop)
+})
+</script>
+</body>
+</html>
