@@ -48,6 +48,7 @@ header {
   top: 0;
   left: 0;
   width: 100vw;
+  z-index: 99;
   #header_bar {
     display: flex;
     justify-content: space-between;
@@ -97,6 +98,21 @@ header {
   margin-bottom: 50px;
 }
 #wrap {
+  #mainPhoto {
+    position: relative;
+    height: 100vw;
+    .layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vw;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
   .subphotos {
     display: flex;
     .box {
@@ -196,21 +212,23 @@ header {
   bottom: 0;
   */
   //transform: translateY(28.1vw);
-  transform: translateY(29.5vw);
+  //transform: translateY(29.5vw);
+  //height: 24.01vw;
   width: 100vw;
   &.hidden {
-    transform: translateY(57.6vw);
+    //transform: translateY(57.6vw);
+    transform: translateY(24.01vw);
   }
   &.riseup {
     animation: riseup .25s 1.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   }
+  /*
   &.is_ios {
     transform: translateY(-6vw);
     .messageBox {
       padding: 3.2vw 3.2vw 6.4vw;
     }
   }
-  /*
   @keyframes riseup {
     0% {
       transform: translateY(28.1vw);
@@ -225,16 +243,19 @@ header {
   */
   @keyframes riseup {
     0% {
-      transform: translateY(57.6vw);
+      transform: translateY(24.01vw);
     }
     99%,to {
-      transform: translateY(29.5vw);
+      transform: translateY(0vw);
     }
   }
   .templateBox {
-    position: relative;
+    position: absolute;
+    left: 0;
+    bottom: 14.94vw;
     z-index: 1;
-    //height: 9.07vw;
+    height: 66.67vw;
+    width: 100vw;
     background-color: rgba(#fff, 1);
     box-shadow:0px -4px 6px -2px #999;
     border-radius: 10px 10px 0 0;
@@ -301,14 +322,18 @@ header {
     }
   }
   .messageBox {
-    position: relative;
+    position: absolute;
+    left: 0;
+    bottom: 0;
     z-index: 2;
+    width: 100vw;
     display: flex;
     align-items: center;
-    //padding: 3.2vw;
-    padding: 3.2vw 3.2vw 32.7vw;
+    padding: 3.2vw;
+    //padding: 3.2vw 3.2vw 32.7vw;
     border-top: 1px solid #ddd;
     background-color: #fff;
+    box-sizing: border-box;
     /*
     &.is_riseup {
       padding: 3.2vw 3.2vw 6.2vw;

@@ -29,14 +29,19 @@
   </header>
 
   <div id="wrap">
-  <div id="mainPhotoBox" style="background-image:url(./img/profile.jpg);"></div>
-  <div class="subphotos" data-pswp>
+  <div id="mainPhoto" data-pswp>
+    <div class="layer" style="z-index:3"><a href="./img/profile_01.jpg" target="_blank"><img src="./img/profile_01_thumb.jpg" alt=""></a></div>
+    <div class="layer" style="z-index:2"><a href="./img/profile_02.jpg" target="_blank"><img src="./img/profile_02_thumb.jpg" alt=""></a></div>
+    <div class="layer" style="z-index:1"><a href="./img/profile_03.jpg" target="_blank"><img src="./img/profile_03_thumb.jpg" alt=""></a></div>
+  </div>
+  <div id="mainPhotoBox" style="background-image:url(./img/profile_01.jpg);"></div>
+  <div class="subphotos">
     <div class="box"><a href="./img/phsw/img01.jpg" target="_blank"><img src="./img/phsw/img01-thumb.jpg" alt=""></a></div>
     <div class="box"><a href="./img/phsw/img02.jpg" target="_blank"><img src="./img/phsw/img02-thumb.jpg" alt=""></a></div>
     <div class="box"><a href="./img/phsw/img03.jpg" target="_blank"><img src="./img/phsw/img03-thumb.jpg" alt=""></a></div>
     <div class="box"><a href="./img/phsw/img04.jpg" target="_blank"><img src="./img/phsw/img04-thumb.jpg" alt=""></a></div>
   </div>
-  <div id="mainPhotoBox" style="background-image:url(./img/profile.jpg);"></div>
+  <div id="mainPhotoBox" style="background-image:url(./img/profile_02.jpg);"></div>
 
   <div id="bbsStatusWrap" v-scroll="reachScroll">
     <div class="statusBody is_play">
@@ -48,8 +53,8 @@
       <div class="distance" id="distanceCircle"><distance-circle ref="circle" last="18"></distance-circle><span class="baseCircle" data-distance="18"></span></div>
     </div>
   </div>
-  <div id="mainPhotoBox" style="background-image:url(./img/profile.jpg);"></div>
-  <div id="mainPhotoBox" style="background-image:url(./img/profile.jpg);"></div>
+  <div id="mainPhotoBox" style="background-image:url(./img/profile_03.jpg);"></div>
+  <div id="mainPhotoBox" style="background-image:url(./img/profile_01.jpg);"></div>
   </div>
 
 </main>
@@ -251,9 +256,11 @@ function _fixedDrawer() {
         hidden: true,
         riseup: false
       },
+      /*
       isIosTransrate: {
         is_ios: false
       },
+      */
       toggleClose: {
         close: true
       },
