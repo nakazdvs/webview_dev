@@ -29,10 +29,10 @@
   </header>
 
   <div id="wrap">
-  <div id="mainPhoto" data-pswp>
-    <div class="layer" style="z-index:3"><a href="./img/profile_01.jpg" target="_blank"><img src="./img/profile_01_thumb.jpg" alt=""></a></div>
-    <div class="layer" style="z-index:2"><a href="./img/profile_02.jpg" target="_blank"><img src="./img/profile_02_thumb.jpg" alt=""></a></div>
-    <div class="layer" style="z-index:1"><a href="./img/profile_03.jpg" target="_blank"><img src="./img/profile_03_thumb.jpg" alt=""></a></div>
+  <div id="mainPhoto" @click="start">
+    <div class="layer"><img src="./img/profile_01_thumb.jpg" data-pswpsrc="./img/profile_01.jpg" class="pswp--item" alt=""></div>
+    <div class="layer"><img src="./img/profile_02_thumb.jpg" data-pswpsrc="./img/profile_02.jpg" class="pswp--item" alt=""></div>
+    <div class="layer"><img src="./img/profile_03_thumb.jpg" data-pswpsrc="./img/profile_03.jpg" class="pswp--item" alt=""></div>
   </div>
   <div id="mainPhotoBox" style="background-image:url(./img/profile_01.jpg);"></div>
   <div class="subphotos">
@@ -106,25 +106,22 @@
 
 </div><!--/container-->
 
+<div id="pswp-mount"></div>
+
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/js/swiper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
 <script src="./js/smoothscroll.min.js"></script>
 <script src="./js/photoswipe.js" charset="utf-8"></script>
 <script src="./js/photoswipe-ui-default.js" charset="utf-8"></script>
-<script src="./js/photoswipe-simplify.js" charset="utf-8"></script>
+<!--script src="./js/photoswipe-simplify.js" charset="utf-8"></script-->
 <script>
 'use strict';
 
-photoswipeSimplify.init({
-  history: false,
-    focus: false,
-});
 
 var ua = window.navigator.userAgent.toLowerCase();
 var is_ios_safari = (ua.indexOf('iphone') !== -1 && ua.indexOf('safari') !== -1 && ua.indexOf('crios') === -1 && ua.indexOf('edge') === -1);
 var is_ios_chrome = (ua.indexOf('iphone') !== -1 && ua.indexOf('safari') !== -1 && ua.indexOf('crios') !== -1 && ua.indexOf('edge') === -1);
-
 
 function _setIosSafari() {
   const html = document.querySelector('html');
@@ -144,6 +141,49 @@ function _setIosSafari() {
   }
 }
 _setIosSafari()
+const Pswp = Vue.extend({
+  template: `<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true"><div class="pswp__bg"></div><div class="pswp__scroll-wrap"><div class="pswp__container"><div class="pswp__item"></div><div class="pswp__item"></div><div class="pswp__item"></div></div><div class="pswp__ui pswp__ui--hidden"><div class="pswp__top-bar"><div class="pswp__counter"></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button><button class="pswp__button pswp__button--share" title="Share"></button><button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button><button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class="pswp__preloader"><div class="pswp__preloader__icn"><div class="pswp__preloader__cut"><div class="pswp__preloader__donut"></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class="pswp__share-tooltip"></div> </div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button><button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class="pswp__caption"><div class="pswp__caption__center"></div></div></div></div></div>`,
+})
+new Pswp().$mount('#pswp-mount')
+function _settingPhotoSwipe(){
+  new Vue({
+    el: '#mainPhoto',
+    data: {
+      pswpElement: document.querySelectorAll('.pswp')[0],
+      items: [],
+      options: {
+        index: 2
+      }
+    },
+    mounted() {
+      this.setItems()
+    },
+    methods: {
+      start() {
+        var photoswipe = new PhotoSwipe( this.pswpElement, PhotoSwipeUI_Default, this.items, this.options);
+        photoswipe.init();
+      },
+      setItems() {
+        const pswpimg = Array.prototype.slice.call(this.$el.querySelectorAll('.pswp--item'));
+        for (let i = 0; i < pswpimg.length; i++){
+          const src = pswpimg[i].dataset.pswpsrc;
+          let obj = {};
+          let img = new Image();
+          img.src = src;
+          img.onload = function(){
+            this.items[i] = {
+              src: src,
+              w: img.naturalWidth,
+              h: img.naturalHeight,
+            }
+          }.bind(this);
+        }
+      }
+    },
+  })
+}
+_settingPhotoSwipe()
+
 
 function _menu() {
   new Vue({
@@ -306,6 +346,7 @@ function _fixedDrawer() {
   });
 }
 _fixedDrawer()
+
 </script>
 </body>
 </html>
