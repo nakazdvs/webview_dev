@@ -110,12 +110,12 @@ header .menu_list.open {
   margin-bottom: 50px;
 }
 
-#wrap #mainPhoto {
+#wrap #photoGallery #mainPhoto {
   position: relative;
   height: 100vw;
 }
 
-#wrap #mainPhoto .layer {
+#wrap #photoGallery #mainPhoto .item {
   position: absolute;
   top: 0;
   left: 0;
@@ -123,17 +123,20 @@ header .menu_list.open {
   height: 100vw;
 }
 
-#wrap #mainPhoto img {
+#wrap #photoGallery #mainPhoto .item.hidden {
+  display: none;
+}
+
+#wrap #photoGallery #mainPhoto .item img {
   width: 100%;
 }
 
-#wrap .subphotos {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
+#wrap #photoGallery #subphoto.sub-photo-swiper {
+  width: 100%;
+  height: 100%;
 }
 
-#wrap .subphotos .box img {
+#wrap #photoGallery #subphoto.sub-photo-swiper .swiper-slide img {
   width: 100%;
 }
 

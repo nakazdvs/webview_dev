@@ -29,18 +29,22 @@
   </header>
 
   <div id="wrap">
-  <div id="mainPhoto" @click="start">
-    <div class="layer"><img src="./img/profile_01_thumb.jpg" data-pswpsrc="./img/profile_01.jpg" class="pswp--item" alt=""></div>
-    <div class="layer"><img src="./img/profile_02_thumb.jpg" data-pswpsrc="./img/profile_02.jpg" class="pswp--item" alt=""></div>
-    <div class="layer"><img src="./img/profile_03_thumb.jpg" data-pswpsrc="./img/profile_03.jpg" class="pswp--item" alt=""></div>
+  <div id="photoGallery">
+    <div id="mainPhoto" @click="start">
+      <div class="item"><img src="./img/profile_01_thumb.jpg" data-pswpsrc="./img/profile_01.jpg" class="pswp--item" alt=""></div>
+      <div class="item hidden"><img src="./img/profile_02_thumb.jpg" data-pswpsrc="./img/profile_02.jpg" class="pswp--item" alt=""></div>
+      <div class="item hidden"><img src="./img/profile_03_thumb.jpg" data-pswpsrc="./img/profile_03.jpg" class="pswp--item" alt=""></div>
+    </div>
+    <div id="subphoto" class="sub-photo-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide item"><img src="./img/profile_01_thumb.jpg" @click="swapImg"></div>
+        <div class="swiper-slide item"><img src="./img/profile_02_thumb.jpg" @click="swapImg"></div>
+        <div class="swiper-slide item"><img src="./img/profile_03_thumb.jpg" @click="swapImg"></div>
+      </div>
+    </div>
   </div>
+
   <div id="mainPhotoBox" style="background-image:url(./img/profile_01.jpg);"></div>
-  <div class="subphotos">
-    <div class="box"><a href="./img/phsw/img01.jpg" target="_blank"><img src="./img/phsw/img01-thumb.jpg" alt=""></a></div>
-    <div class="box"><a href="./img/phsw/img02.jpg" target="_blank"><img src="./img/phsw/img02-thumb.jpg" alt=""></a></div>
-    <div class="box"><a href="./img/phsw/img03.jpg" target="_blank"><img src="./img/phsw/img03-thumb.jpg" alt=""></a></div>
-    <div class="box"><a href="./img/phsw/img04.jpg" target="_blank"><img src="./img/phsw/img04-thumb.jpg" alt=""></a></div>
-  </div>
   <div id="mainPhotoBox" style="background-image:url(./img/profile_02.jpg);"></div>
 
   <div id="bbsStatusWrap" v-scroll="reachScroll">
@@ -147,21 +151,30 @@ const Pswp = Vue.extend({
 new Pswp().$mount('#pswp-mount')
 function _settingPhotoSwipe(){
   new Vue({
-    el: '#mainPhoto',
+    el: '#photoGallery',
     data: {
       pswpElement: document.querySelectorAll('.pswp')[0],
       items: [],
       options: {
-        index: 2
+        index: 0,
+        loop: false
       }
     },
     mounted() {
-      this.setItems()
+      this.setSwiper();
+      this.setItems();
     },
     methods: {
       start() {
-        var photoswipe = new PhotoSwipe( this.pswpElement, PhotoSwipeUI_Default, this.items, this.options);
-        photoswipe.init();
+        var pswp = new PhotoSwipe( this.pswpElement, PhotoSwipeUI_Default, this.items, this.options);
+        pswp.init();
+        pswp.listen('afterChange', function() {
+          const idx = pswp.getCurrentIndex();
+          this.changePhoto(idx);
+          console.log(idx)
+          //console.log(this.options.index)
+          this.options.index = idx;
+        }.bind(this));
       },
       setItems() {
         const pswpimg = Array.prototype.slice.call(this.$el.querySelectorAll('.pswp--item'));
@@ -178,6 +191,27 @@ function _settingPhotoSwipe(){
             }
           }.bind(this);
         }
+      },
+      setSwiper(){
+        new Swiper('.sub-photo-swiper',{
+          slidesPerView: 5,
+          spaceBetween: 5,
+          freeMode: true,
+        })
+      },
+      swapImg(e) {
+        const el = e.target;
+        const items = Array.prototype.slice.call(subphoto.querySelectorAll('.item img'));
+        const idx = items.indexOf(el);
+        this.changePhoto(idx);
+        this.options.index = idx;
+      },
+      changePhoto(i) {
+        const pswpitems = Array.prototype.slice.call(mainPhoto.querySelectorAll('.item'));
+        pswpitems.forEach(function(itm){
+          itm.classList.add('hidden');
+        })
+        pswpitems[i].classList.remove('hidden');
       }
     },
   })
@@ -332,8 +366,10 @@ function _fixedDrawer() {
           this.setIsRiseup.is_riseup = false;
         }.bind(this));
       },
-      slideUpTemplate() {
-        this.toggleClose.close =! this.toggleClose.close
+      slideUpTemplate(e) {
+        this.toggleClose.close =! this.toggleClose.close;
+        e.stopPropagation();
+        e.preventDefault();
       },
       setSwiper() {
         new Swiper('.swiper-container',{

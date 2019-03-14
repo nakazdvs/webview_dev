@@ -98,26 +98,31 @@ header {
   margin-bottom: 50px;
 }
 #wrap {
-  #mainPhoto {
-    position: relative;
-    height: 100vw;
-    .layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
+  #photoGallery {
+    #mainPhoto {
+      position: relative;
       height: 100vw;
+      .item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vw;
+        &.hidden {
+          display: none;
+        }
+        img {
+          width: 100%;
+        }
+      }
     }
-
-    img {
+    #subphoto.sub-photo-swiper {
       width: 100%;
-    }
-  }
-  .subphotos {
-    display: flex;
-    .box {
-      img {
-        width: 100%;
+      height: 100%;
+      .swiper-slide {
+        img {
+          width: 100%;
+        }
       }
     }
   }
