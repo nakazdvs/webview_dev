@@ -30,16 +30,37 @@
 
   <div id="wrap">
   <div id="photoGallery">
-    <div id="mainPhoto" @click="start">
-      <div class="item"><img src="./img/profile_01_thumb.jpg" data-pswpsrc="./img/profile_01.jpg" class="pswp--item" alt=""></div>
-      <div class="item hidden"><img src="./img/profile_02_thumb.jpg" data-pswpsrc="./img/profile_02.jpg" class="pswp--item" alt=""></div>
-      <div class="item hidden"><img src="./img/profile_03_thumb.jpg" data-pswpsrc="./img/profile_03.jpg" class="pswp--item" alt=""></div>
+    <div id="mainPhoto">
+      <div class="main-photo-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide item"><img src="./img/profile_01_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_02_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_03_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_04_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_05_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_06_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_07_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_08_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_09_thumb.jpg"></div>
+          <div class="swiper-slide item"><img src="./img/profile_10_thumb.jpg"></div>
+        </div>
+      </div>
+
     </div>
-    <div id="subphoto" class="sub-photo-swiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide item"><img src="./img/profile_01_thumb.jpg" @click="swapImg"></div>
-        <div class="swiper-slide item"><img src="./img/profile_02_thumb.jpg" @click="swapImg"></div>
-        <div class="swiper-slide item"><img src="./img/profile_03_thumb.jpg" @click="swapImg"></div>
+    <div id="subphoto">
+      <div class="sub-photo-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide item open focus"><img src="./img/profile_01_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_02_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_03_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_04_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_05_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_06_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_07_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_08_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_09_thumb.jpg" @click="swipeImg"></div>
+          <div class="swiper-slide item open"><img src="./img/profile_10_thumb.jpg" @click="swipeImg"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -154,64 +175,135 @@ function _settingPhotoSwipe(){
     el: '#photoGallery',
     data: {
       pswpElement: document.querySelectorAll('.pswp')[0],
-      items: [],
+      items: [
+        {
+          src: './img/profile_01.jpg',
+          w: 750,
+          h: 1085
+        },
+        {
+          src: './img/profile_02.jpg',
+          w: 500,
+          h: 620
+        },
+        {
+          src: './img/profile_03.jpg',
+          w: 402,
+          h: 711
+        },
+        {
+          src: './img/profile_04.jpg',
+          w: 728,
+          h: 863
+        },
+        {
+          src: './img/profile_05.jpg',
+          w: 750,
+          h: 1090
+        },
+        {
+          src: './img/profile_06.jpg',
+          w: 660,
+          h: 395
+        },
+        {
+          src: './img/profile_07.jpg',
+          w: 607,
+          h: 480
+        },
+        {
+          src: './img/profile_08.jpg',
+          w: 605,
+          h: 827
+        },
+        {
+          src: './img/profile_09.jpg',
+          w: 564,
+          h: 488
+        },
+        {
+          src: './img/profile_10.jpg',
+          w: 1200,
+          h: 1200
+        },
+      ],
       options: {
-        index: 0,
+        index: '',
         loop: false
-      }
+      },
+      myMainSwiper : '',
+      mySubSwiper : '',
     },
     mounted() {
-      this.setSwiper();
-      this.setItems();
+      this.options.index = 0;
+      this.setMainSwiper();
+      this.setSubSwiper();
     },
     methods: {
-      start() {
+      galleryStart() {
         var pswp = new PhotoSwipe( this.pswpElement, PhotoSwipeUI_Default, this.items, this.options);
         pswp.init();
         pswp.listen('afterChange', function() {
           const idx = pswp.getCurrentIndex();
           this.changePhoto(idx);
-          console.log(idx)
-          //console.log(this.options.index)
           this.options.index = idx;
+          this.mySubSwiper.slideTo(idx,0)
+
+          const items = Array.prototype.slice.call(subphoto.querySelectorAll('.item.open img'));
+          this.changeSubPhoto(items, items[idx]);
+
         }.bind(this));
       },
-      setItems() {
-        const pswpimg = Array.prototype.slice.call(this.$el.querySelectorAll('.pswp--item'));
-        for (let i = 0; i < pswpimg.length; i++){
-          const src = pswpimg[i].dataset.pswpsrc;
-          let obj = {};
-          let img = new Image();
-          img.src = src;
-          img.onload = function(){
-            this.items[i] = {
-              src: src,
-              w: img.naturalWidth,
-              h: img.naturalHeight,
-            }
-          }.bind(this);
-        }
+      setMainSwiper(){
+        const myMainSwiper = new Swiper('.main-photo-swiper',{
+          speed: 300,
+        })
+        this.myMainSwiper = myMainSwiper;
+        myMainSwiper.on('slideNextTransitionEnd',function(){
+          const items = Array.prototype.slice.call(subphoto.querySelectorAll('.item.open img'));
+          const idx = myMainSwiper.activeIndex;
+          this.changeSubPhoto(items, items[idx]);
+          this.options.index = idx;
+        }.bind(this))
+        myMainSwiper.on('slidePrevTransitionEnd',function(){
+          const items = Array.prototype.slice.call(subphoto.querySelectorAll('.item.open img'));
+          const idx = myMainSwiper.activeIndex;
+          this.changeSubPhoto(items, items[idx]);
+          this.options.index = idx;
+        }.bind(this))
+        myMainSwiper.on('tap',function(){
+          this.galleryStart();
+        }.bind(this))
       },
-      setSwiper(){
-        new Swiper('.sub-photo-swiper',{
-          slidesPerView: 5,
-          spaceBetween: 5,
+      setSubSwiper(){
+        const mySubSwiper = new Swiper('.sub-photo-swiper',{
+          slidesPerView: 5.5,
+          spaceBetween: 8,
           freeMode: true,
         })
+        this.mySubSwiper = mySubSwiper;
       },
-      swapImg(e) {
+      swipeImg(e) {
         const el = e.target;
-        const items = Array.prototype.slice.call(subphoto.querySelectorAll('.item img'));
+
+        const items = Array.prototype.slice.call(subphoto.querySelectorAll('.item.open img'));
         const idx = items.indexOf(el);
         this.changePhoto(idx);
         this.options.index = idx;
+
+        this.changeSubPhoto(items, el);
       },
       changePhoto(i) {
-        const pswpitems = Array.prototype.slice.call(mainPhoto.querySelectorAll('.item'));
-        pswpitems.forEach(function(itm){
-          itm.classList.add('hidden');
+        this.myMainSwiper.slideTo(i,0)
+      },
+      changeSubPhoto(array,el){
+        const filter_array = array.filter(function(item){
+          return item != el;
         })
-        pswpitems[i].classList.remove('hidden');
+        filter_array.forEach(function(fitm){
+          fitm.parentNode.classList.remove('focus');
+        })
+        el.parentNode.classList.add('focus');
       }
     },
   })
